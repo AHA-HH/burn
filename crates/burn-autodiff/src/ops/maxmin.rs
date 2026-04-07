@@ -3,7 +3,7 @@ use crate::{checkpoint::base::Checkpointer, grads::Gradients};
 use burn_backend::{Backend, TensorMetadata};
 use burn_std::Shape;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub(crate) struct MaxMinDim;
 
 impl<B: Backend> Backward<B, 1> for MaxMinDim {

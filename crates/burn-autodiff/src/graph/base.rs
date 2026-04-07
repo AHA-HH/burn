@@ -12,6 +12,14 @@ pub trait Step: Send + core::fmt::Debug {
     fn node(&self) -> NodeId;
     /// The parents of the node associated to the step.
     fn parents(&self) -> &[Parent];
+    /// Clones the step as a boxed trait object
+    fn clone_box(&self) -> Box<dyn Step>;
+}
+
+impl Clone for Box<dyn Step> {
+    fn clone(&self) -> Self {
+        self.clone_box()
+    }
 }
 
 pub type StepBoxed = Box<dyn Step>;

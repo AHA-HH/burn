@@ -15,7 +15,7 @@ use super::OpsKind;
 
 impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B, C> {
     fn embedding(weights: AutodiffTensor<B>, indices: IntTensor<B>) -> AutodiffTensor<B> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Embedding;
 
         impl<B: Backend> Backward<B, 1> for Embedding {
@@ -62,9 +62,9 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
         bias: Option<AutodiffTensor<B>>,
         options: ConvOptions<1>,
     ) -> AutodiffTensor<B> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Conv1DWithBias;
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Conv1DNoBias;
 
         impl<B: Backend> Backward<B, 3> for Conv1DWithBias {
@@ -185,9 +185,9 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
         bias: Option<AutodiffTensor<B>>,
         options: ConvTransposeOptions<1>,
     ) -> AutodiffTensor<B> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct ConvTranspose1DWithBias;
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct ConvTranspose1DNoBias;
 
         impl<B: Backend> Backward<B, 3> for ConvTranspose1DWithBias {
@@ -320,9 +320,9 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
         bias: Option<AutodiffTensor<B>>,
         options: ConvOptions<2>,
     ) -> AutodiffTensor<B> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Conv2DWithBias;
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Conv2DNoBias;
 
         impl<B: Backend> Backward<B, 3> for Conv2DWithBias {
@@ -448,13 +448,13 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
         bias: Option<AutodiffTensor<B>>,
         options: DeformConvOptions<2>,
     ) -> AutodiffTensor<B> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct DeformConv2DWithMaskWithBias;
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct DeformConv2DWithMaskNoBias;
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct DeformConv2DNoMaskWithBias;
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct DeformConv2DNoMaskNoBias;
 
         impl<B: Backend> Backward<B, 5> for DeformConv2DWithMaskWithBias {
@@ -783,9 +783,9 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
         bias: Option<AutodiffTensor<B>>,
         options: ConvTransposeOptions<2>,
     ) -> AutodiffTensor<B> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct ConvTranspose2DWithBias;
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct ConvTranspose2DNoBias;
 
         impl<B: Backend> Backward<B, 3> for ConvTranspose2DWithBias {
@@ -920,9 +920,9 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
         bias: Option<AutodiffTensor<B>>,
         options: ConvOptions<3>,
     ) -> AutodiffTensor<B> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Conv3DWithBias;
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Conv3DNoBias;
 
         impl<B: Backend> Backward<B, 3> for Conv3DWithBias {
@@ -1046,9 +1046,9 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
         bias: Option<AutodiffTensor<B>>,
         options: ConvTransposeOptions<3>,
     ) -> AutodiffTensor<B> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct ConvTranspose3DWithBias;
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct ConvTranspose3DNoBias;
 
         impl<B: Backend> Backward<B, 3> for ConvTranspose3DWithBias {
@@ -1200,7 +1200,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
         count_include_pad: bool,
         ceil_mode: bool,
     ) -> AutodiffTensor<B> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct AvgPool1D;
 
         impl<B: Backend> Backward<B, 1> for AvgPool1D {
@@ -1278,7 +1278,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
         count_include_pad: bool,
         ceil_mode: bool,
     ) -> AutodiffTensor<B> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct AvgPool2D;
 
         impl<B: Backend> Backward<B, 1> for AvgPool2D {
@@ -1601,7 +1601,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
         panic!("Can't differentiate max pool2d with indices backward.");
     }
     fn adaptive_avg_pool1d(x: AutodiffTensor<B>, output_size: usize) -> AutodiffTensor<B> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct AdaptiveAvgPool1D;
 
         impl<B: Backend> Backward<B, 1> for AdaptiveAvgPool1D {
@@ -1640,7 +1640,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
     }
 
     fn adaptive_avg_pool2d(x: AutodiffTensor<B>, output_size: [usize; 2]) -> AutodiffTensor<B> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct AdaptiveAvgPool2D;
 
         impl<B: Backend> Backward<B, 1> for AdaptiveAvgPool2D {
@@ -1690,7 +1690,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
         output_size: [usize; 2],
         options: InterpolateOptions,
     ) -> AutodiffTensor<B> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Interpolate;
         impl<B: Backend> Backward<B, 1> for Interpolate {
             type State = (NodeId, [usize; 2], InterpolateOptions);
@@ -1751,7 +1751,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct MaxPool1D;
 
 impl<B: Backend> Backward<B, 1> for MaxPool1D {
@@ -1785,7 +1785,7 @@ impl<B: Backend> Backward<B, 1> for MaxPool1D {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct MaxPool2D;
 
 impl<B: Backend> Backward<B, 1> for MaxPool2D {

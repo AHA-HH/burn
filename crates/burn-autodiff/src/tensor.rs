@@ -30,7 +30,7 @@ impl<B: Backend> TensorMetadata for AutodiffTensor<B> {
 
 pub type NodeRefCount = Arc<NodeId>;
 
-#[derive(new, Debug)]
+#[derive(new, Debug, Clone)]
 pub(crate) struct RootStep {
     node: NodeRef,
 }
@@ -50,6 +50,10 @@ impl Step for RootStep {
 
     fn depth(&self) -> usize {
         self.node.order
+    }
+
+    fn clone_box(&self) -> Box<dyn Step> {
+        Box::new(self.clone())
     }
 }
 
@@ -172,6 +176,12 @@ impl<B: Backend> AutodiffTensor<B> {
         let client = self.node.client.clone();
 
         AutodiffClient::backward::<B>(&client, self)
+    }
+
+    pub fn backward_retain(self) -> Gradients {
+        let client = self.node.client.clone();
+        
+        AutodiffClient::backward_retain::<B>(&client, self)
     }
 
     pub fn grad(&self, grads: &Gradients) -> Option<B::FloatTensorPrimitive> {

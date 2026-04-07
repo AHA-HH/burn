@@ -126,7 +126,7 @@ where
 impl<BO, B, C, const N: usize> OpsPrep<BO, B, (), C, N, ComputePropertyDone>
 where
     B: Backend,
-    BO: Backward<B, N, State = ()>,
+    BO: Backward<B, N, State = ()> + Clone,
 {
     /// Prepare a stateless operation.
     pub fn stateless(self, output: FloatTensor<B>) -> AutodiffTensor<B> {
@@ -191,7 +191,7 @@ impl<BO, B, S, C, const N: usize> OpsPrep<BO, B, S, C, N, Tracked>
 where
     B: Backend,
     S: Clone + Send + core::fmt::Debug + 'static,
-    BO: Backward<B, N, State = S>,
+    BO: Backward<B, N, State = S> + Clone,
 {
     /// Finish the preparation of a tracked operation and returns the output tensor.
     pub fn finish(self, state: S, output: FloatTensor<B>) -> AutodiffTensor<B> {
@@ -225,7 +225,7 @@ pub enum OpsKind<BO, B, S, C, const N: usize> {
 }
 
 /// Operation containing its parent nodes, its own node and the backward step state.
-#[derive(new, Debug)]
+#[derive(new, Debug, Clone)]
 pub struct Ops<S, const N: usize> {
     /// Parents nodes.
     pub parents: [Option<NodeRef>; N],
@@ -236,11 +236,11 @@ pub struct Ops<S, const N: usize> {
 }
 
 /// Operation implementing backward [step](Step) with type erasing.
-#[derive(new, Debug)]
+#[derive(new, Debug, Clone)]
 struct OpsStep<B, T, SB, const N: usize>
 where
     B: Backend,
-    T: Backward<B, N, State = SB>,
+    T: Backward<B, N, State = SB> + Clone,
     SB: Clone + Send + core::fmt::Debug + 'static,
 {
     ops: Ops<SB, N>,
@@ -251,7 +251,7 @@ where
 impl<B, T, SB, const N: usize> Step for OpsStep<B, T, SB, N>
 where
     B: Backend,
-    T: Backward<B, N, State = SB>,
+    T: Backward<B, N, State = SB> + Clone,
     SB: Clone + Send + core::fmt::Debug + 'static,
 {
     fn step(self: Box<Self>, grads: &mut Gradients, checkpointer: &mut Checkpointer) {
@@ -269,9 +269,13 @@ where
     fn depth(&self) -> usize {
         self.ops.node.order
     }
+
+    fn clone_box(&self) -> Box<dyn Step> {
+        Box::new(self.clone())
+    }
 }
 
-#[derive(new, Debug)]
+#[derive(new, Debug, Clone)]
 struct UntrackedOpsStep<const N: usize> {
     ops: Ops<(), N>,
 }
@@ -290,6 +294,10 @@ impl<const N: usize> Step for UntrackedOpsStep<N> {
     }
     fn depth(&self) -> usize {
         self.ops.node.order
+    }
+
+    fn clone_box(&self) -> Box<dyn Step> {
+        Box::new(self.clone())
     }
 }
 

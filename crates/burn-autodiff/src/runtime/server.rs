@@ -46,13 +46,40 @@ impl AutodiffServer {
 
     pub fn backward<NC: NodeCleaner>(&mut self, grads: Gradients, node_id: NodeId) -> Gradients {
         let step = self.steps.remove(&node_id).expect(
-            "Node should have a step registered, did you forget to call \
+            "Real Node should have a step registered, did you forget to call \
              `Tensor::register_grad` on the tensor where you need gradients?",
         );
         let builder = self.actions_builder.remove(&node_id).unwrap();
 
         let mut consumed = Vec::new();
         let (tape, checkpointer) = self.build_tape(node_id, step, builder, &mut consumed);
+
+        let gradients = Self::execute_steps(tape, grads, checkpointer);
+
+        // Cleanup
+        let mut cleaner = NC::init();
+        self.memory_management
+            .free_unavailable_nodes(|node_id: &NodeId| {
+                self.steps.remove(node_id);
+                self.actions_builder.remove(node_id);
+                NC::clean(&mut cleaner, node_id);
+            });
+        for node_id in consumed {
+            cleaner.clean(&node_id)
+        }
+
+        gradients
+    }
+
+    pub fn backward_retain<NC: NodeCleaner>(&mut self, grads: Gradients, node_id: NodeId) -> Gradients {
+        let step = self.steps.get(&node_id).expect(
+            "Test Node should have a step registered, did you forget to call \
+             `Tensor::register_grad` on the tensor where you need gradients?",
+        ).clone();
+        let builder = self.actions_builder.get(&node_id).unwrap().clone();
+
+        let mut consumed = Vec::new();
+        let (tape, checkpointer) = self.build_tape_retain(node_id, step, builder, &mut consumed);
 
         let gradients = Self::execute_steps(tape, grads, checkpointer);
 
@@ -110,6 +137,45 @@ impl AutodiffServer {
             }
 
             if let Some(node_builder) = self.actions_builder.remove(&id) {
+                builder.extend(node_builder);
+            }
+        });
+
+        let checkpointer = builder.build(NodeTree::new(tree));
+
+        (tape, checkpointer)
+    }
+
+    fn build_tape_retain(
+        &mut self,
+        node: NodeId,
+        node_step: StepBoxed,
+        mut builder: CheckpointerBuilder,
+        consumed: &mut Vec<NodeId>,
+    ) -> (Vec<Vec<StepBoxed>>, Checkpointer) {
+        let mut tape = (0..node_step.depth())
+            .map(|_| Vec::with_capacity(1))
+            .collect::<Vec<_>>();
+
+        let mut tree = HashMap::default();
+
+        BreadthFirstSearch.traverse(node, node_step, &mut self.steps, |id, step| {
+            // Clean up consumed node
+            consumed.push(id);
+
+            let depth = step.depth();
+
+            if depth == 0 {
+                return;
+            }
+
+            if let Some(steps) = tape.get_mut(depth - 1) {
+                let parents = step.parents().iter().map(|p| p.id).filter(|s| *s != id);
+                tree.insert(id, parents.collect());
+                steps.push(step);
+            }
+
+            if let Some(node_builder) = self.actions_builder.get(&id).cloned() {
                 builder.extend(node_builder);
             }
         });

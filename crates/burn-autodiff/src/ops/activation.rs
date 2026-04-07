@@ -15,7 +15,7 @@ use burn_backend::{Backend, ops::ActivationOps, tensor::FloatTensor};
 
 impl<B: Backend, C: CheckpointStrategy> ActivationOps<Autodiff<B, C>> for Autodiff<B, C> {
     fn gelu(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Gelu;
 
         retro_unary!(RetroGelu, B::gelu);
@@ -53,7 +53,7 @@ impl<B: Backend, C: CheckpointStrategy> ActivationOps<Autodiff<B, C>> for Autodi
     }
 
     fn relu(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Relu;
 
         retro_unary!(RetroRelu, B::relu);
@@ -90,7 +90,7 @@ impl<B: Backend, C: CheckpointStrategy> ActivationOps<Autodiff<B, C>> for Autodi
     }
 
     fn sigmoid(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Sigmoid;
 
         retro_unary!(RetroSigmoid, B::sigmoid);
@@ -128,7 +128,7 @@ impl<B: Backend, C: CheckpointStrategy> ActivationOps<Autodiff<B, C>> for Autodi
     }
 
     fn log_sigmoid(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct LogSigmoid;
 
         retro_unary!(RetroLogSigmoid, B::log_sigmoid);

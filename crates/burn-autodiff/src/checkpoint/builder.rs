@@ -52,7 +52,21 @@ impl CheckpointingAction {
     }
 }
 
-#[derive(new, Debug, Default)]
+impl Clone for CheckpointingAction {
+    fn clone(&self) -> Self {
+        match self {
+            Self::Recompute { node_id, retro_forward } => Self::Recompute {
+                node_id: *node_id,
+                retro_forward: retro_forward.clone(),
+            },
+            Self::Computed { .. } => {
+                panic!("Computed checkpointing actions cannot be cloned")
+            }
+        }
+    }
+}
+
+#[derive(new, Debug, Default, Clone)]
 /// Accumulates checkpoints as checkpointing actions during the forward pass,
 /// and builds a checkpointer right before the backward pass
 pub struct CheckpointerBuilder {

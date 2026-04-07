@@ -98,7 +98,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
         )
     ))]
     fn float_to_device(tensor: FloatTensor<Self>, device: &Device<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct ToDevice;
 
         impl<B: Backend> Backward<B, 1> for ToDevice {
@@ -134,7 +134,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_add(lhs: FloatTensor<Self>, rhs: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Add;
 
         retro_binary!(RetroAdd, B::float_add);
@@ -176,7 +176,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_add_scalar(lhs: FloatTensor<Self>, rhs: Scalar) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct AddScalar;
 
         retro_unary_scalar!(RetroAddScalar, B::float_add_scalar);
@@ -203,7 +203,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_sub(lhs: FloatTensor<Self>, rhs: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Sub;
 
         retro_binary!(RetroSub, B::float_sub);
@@ -245,7 +245,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_sub_scalar(lhs: FloatTensor<Self>, rhs: Scalar) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct SubScalar;
 
         retro_unary_scalar!(RetroSubScalar, B::float_sub_scalar);
@@ -272,7 +272,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_mul(lhs: FloatTensor<Self>, rhs: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Mul;
 
         retro_binary!(RetroMul, B::float_mul);
@@ -331,7 +331,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_mul_scalar(lhs: FloatTensor<Self>, rhs: Scalar) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct MulScalar;
 
         retro_unary_scalar!(RetroMulScalar, B::float_mul_scalar);
@@ -364,7 +364,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_div(lhs: FloatTensor<Self>, rhs: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Div;
 
         retro_binary!(RetroDiv, B::float_div);
@@ -432,7 +432,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_div_scalar(lhs: FloatTensor<Self>, rhs: Scalar) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct DivScalar;
 
         retro_unary_scalar!(RetroDivScalar, B::float_div_scalar);
@@ -466,7 +466,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_remainder(lhs: FloatTensor<Self>, rhs: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Rem;
 
         retro_binary!(RetroRem, B::float_remainder);
@@ -532,7 +532,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_remainder_scalar(lhs: FloatTensor<Self>, rhs: Scalar) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct RemainderScalar;
 
         retro_unary_scalar!(RetroRemainderScalar, B::float_remainder_scalar);
@@ -559,7 +559,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_matmul(lhs: FloatTensor<Self>, rhs: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Matmul;
 
         impl<B: Backend> Backward<B, 2> for Matmul {
@@ -621,7 +621,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
         rhs: FloatTensor<Self>,
         dim: usize,
     ) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Cross;
 
         impl<B: Backend> Backward<B, 2> for Cross {
@@ -670,7 +670,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_neg(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Neg;
 
         retro_unary!(RetroNeg, B::float_neg);
@@ -696,7 +696,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_recip(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Recip;
 
         retro_unary!(RetroRecip, B::float_recip);
@@ -736,7 +736,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_swap_dims(tensor: FloatTensor<Self>, dim1: usize, dim2: usize) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct SwapDim;
 
         #[derive(new, Debug)]
@@ -790,7 +790,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_permute(tensor: FloatTensor<Self>, axes: &[usize]) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct PermuteDim;
 
         #[derive(new, Debug)]
@@ -845,7 +845,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_flip(tensor: FloatTensor<Self>, axes: &[usize]) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct FlipDim;
 
         #[derive(new, Debug)]
@@ -895,7 +895,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_reshape(tensor: FloatTensor<Self>, shape: Shape) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct ReshapeDim;
 
         #[derive(new, Debug)]
@@ -960,7 +960,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
         tensor: FloatTensor<Self>,
         indices: IntTensor<B>,
     ) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Gather;
 
         impl<B: Backend> Backward<B, 1> for Gather {
@@ -1007,7 +1007,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
         indices: IntTensor<B>,
         value: FloatTensor<Self>,
     ) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Scatter;
 
         impl<B: Backend> Backward<B, 2> for Scatter {
@@ -1055,7 +1055,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
         dim: usize,
         indices: IntTensor<B>,
     ) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Select;
 
         #[derive(new, Debug)]
@@ -1119,7 +1119,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
         indices: IntTensor<B>,
         value: FloatTensor<Self>,
     ) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct IndexSelectDimAssign;
 
         #[derive(new, Debug)]
@@ -1186,7 +1186,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_slice(tensor: FloatTensor<Self>, slices: &[Slice]) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Index;
 
         #[derive(new, Debug)]
@@ -1246,7 +1246,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
         slices: &[Slice],
         value: FloatTensor<Self>,
     ) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct SliceAssign;
 
         #[derive(new, Debug)]
@@ -1323,7 +1323,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
         mask: BoolTensor<Self>,
         source: FloatTensor<Self>,
     ) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct MaskWhere;
 
         impl<B: Backend> Backward<B, 2> for MaskWhere {
@@ -1385,7 +1385,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
         mask: BoolTensor<B>,
         value: Scalar,
     ) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct MaskFill;
 
         impl<B: Backend> Backward<B, 1> for MaskFill {
@@ -1491,7 +1491,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_mean(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Mean;
 
         impl<B: Backend> Backward<B, 1> for Mean {
@@ -1524,7 +1524,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_sum(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Sum;
 
         impl<B: Backend> Backward<B, 1> for Sum {
@@ -1555,7 +1555,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_mean_dim(tensor: FloatTensor<Self>, dim: usize) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct MeanDim;
 
         impl<B: Backend> Backward<B, 1> for MeanDim {
@@ -1594,7 +1594,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_sum_dim(tensor: FloatTensor<Self>, dim: usize) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct SumDim;
 
         impl<B: Backend> Backward<B, 1> for SumDim {
@@ -1631,7 +1631,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_cumsum(tensor: FloatTensor<Self>, dim: usize) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct CumSum;
 
         impl<B: Backend> Backward<B, 1> for CumSum {
@@ -1668,7 +1668,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_cumprod(tensor: FloatTensor<Self>, dim: usize) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct CumProd;
 
         impl<B: Backend> Backward<B, 1> for CumProd {
@@ -1726,7 +1726,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_cummin(tensor: FloatTensor<Self>, dim: usize) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct CumMin;
 
         impl<B: Backend> Backward<B, 1> for CumMin {
@@ -1791,7 +1791,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_cummax(tensor: FloatTensor<Self>, dim: usize) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct CumMax;
 
         impl<B: Backend> Backward<B, 1> for CumMax {
@@ -1864,7 +1864,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_exp(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Exp;
 
         retro_unary!(RetroExp, B::float_exp);
@@ -1902,7 +1902,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_log(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Log;
 
         retro_unary!(RetroLog, B::float_log);
@@ -1940,7 +1940,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_log1p(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Log1P;
 
         retro_unary!(RetroLog1P, B::float_log1p);
@@ -1980,7 +1980,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_powf_scalar_impl(tensor: FloatTensor<Self>, value: Scalar) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct PowfScalar;
 
         #[derive(new, Debug)]
@@ -2035,7 +2035,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_sqrt(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Sqrt;
 
         retro_unary!(RetroSqrt, B::float_sqrt);
@@ -2077,7 +2077,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_abs(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Abs;
 
         retro_unary!(RetroAbs, B::float_abs);
@@ -2115,7 +2115,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_cos(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Cos;
 
         retro_unary!(RetroCos, B::float_cos);
@@ -2154,7 +2154,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_sin(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Sin;
 
         retro_unary!(RetroSin, B::float_sin);
@@ -2192,7 +2192,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_tanh(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Tanh;
 
         retro_unary!(RetroTanh, B::float_tanh);
@@ -2234,7 +2234,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_cosh(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Cosh;
 
         retro_unary!(RetroCosh, B::float_cosh);
@@ -2271,7 +2271,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_sinh(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Sinh;
 
         retro_unary!(RetroSinh, B::float_sinh);
@@ -2308,7 +2308,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_tan(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Tan;
 
         retro_unary!(RetroTan, B::float_tan);
@@ -2348,7 +2348,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_asin(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Asin;
 
         retro_unary!(RetroAsin, B::float_asin);
@@ -2388,7 +2388,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_acos(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Acos;
 
         retro_unary!(RetroAcos, B::float_acos);
@@ -2429,7 +2429,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_atan(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Atan;
 
         retro_unary!(RetroAtan, B::float_atan);
@@ -2469,7 +2469,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_asinh(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Asinh;
 
         retro_unary!(RetroAsinh, B::float_asinh);
@@ -2510,7 +2510,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_acosh(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Acosh;
 
         retro_unary!(RetroAcosh, B::float_acosh);
@@ -2551,7 +2551,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_atanh(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Atanh;
 
         retro_unary!(RetroAtanh, B::float_atanh);
@@ -2592,7 +2592,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_atan2(y: FloatTensor<Self>, x: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Atan2;
 
         retro_binary!(RetroAtan2, B::float_atan2);
@@ -2670,7 +2670,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_round(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Round;
         retro_unary!(RetroRound, B::float_round);
 
@@ -2706,7 +2706,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_floor(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Floor;
         retro_unary!(RetroFloor, B::float_floor);
 
@@ -2742,7 +2742,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_ceil(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Ceil;
         retro_unary!(RetroCeil, B::float_ceil);
 
@@ -2778,7 +2778,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_trunc(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Trunc;
         retro_unary!(RetroTrunc, B::float_trunc);
 
@@ -2814,7 +2814,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_erf(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Erf;
 
         retro_unary!(RetroErf, B::float_erf);
@@ -2856,7 +2856,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_cat(tensors: Vec<FloatTensor<Self>>, dim: usize) -> FloatTensor<Self> {
-        #[derive(new, Debug)]
+        #[derive(new, Debug, Clone)]
         struct CatStep<B: Backend> {
             nodes: Vec<Option<NodeRef>>,
             // The dimension of each tensor along the dim dimension.
@@ -2904,6 +2904,10 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
             }
             fn depth(&self) -> usize {
                 self.output.order
+            }
+
+            fn clone_box(&self) -> Box<dyn Step> {
+                Box::new(self.clone())
             }
         }
 
@@ -3032,7 +3036,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_powf(lhs: FloatTensor<Self>, rhs: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct PowF;
 
         retro_binary!(RetroPowf, B::float_powf);
@@ -3108,7 +3112,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_sign(tensor: FloatTensor<Self>) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Sign;
 
         retro_unary!(RetroSign, B::float_sign);
@@ -3138,7 +3142,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
 
     fn float_expand(tensor: FloatTensor<Self>, shape: Shape) -> FloatTensor<Self> {
         // D1: tensor, D2: shape
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct ExpandDim;
 
         #[derive(new, Debug)]
@@ -3259,7 +3263,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_repeat_dim(tensor: FloatTensor<Self>, dim: usize, times: usize) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Repeat;
 
         #[derive(new, Debug)]
@@ -3324,7 +3328,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
     }
 
     fn float_cast(tensor: FloatTensor<Self>, dtype: burn_std::FloatDType) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Cast;
 
         impl<B: Backend> Backward<B, 1> for Cast {
@@ -3366,7 +3370,7 @@ impl<B: Backend, C: CheckpointStrategy> FloatTensorOps<Self> for Autodiff<B, C> 
         size: usize,
         step: usize,
     ) -> FloatTensor<Self> {
-        #[derive(Debug)]
+        #[derive(Debug, Clone)]
         struct Unfold;
 
         impl<B: Backend> Backward<B, 1> for Unfold {

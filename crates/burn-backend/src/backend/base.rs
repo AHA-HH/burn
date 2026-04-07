@@ -215,6 +215,20 @@ pub trait AutodiffBackend: Backend {
     /// The gradients.
     fn backward(tensor: FloatTensor<Self>) -> Self::Gradients;
 
+    /// Backward pass with retained graph, allowing multiple backward passes
+    /// on the same computation graph.
+    ///
+    /// # Arguments
+    ///
+    /// * `tensor` - The tensor is the last node of computational graph where the gradients are computed.
+    ///
+    /// # Returns
+    ///
+    /// The gradients.
+    fn backward_retain(tensor: FloatTensor<Self>) -> Self::Gradients {
+        Self::backward(tensor) // default fallback so other backends are unaffected
+    }
+
     /// Returns the gradients of a tensor.
     ///
     /// # Arguments
