@@ -18,12 +18,13 @@ fn main() {
     let result1 = result.clone().slice(s![0, 0]);
     let result2 = result.clone().slice(s![1, 0]);
    
-    // Compute the gradients
-    let all_grads1 = result1.backward();
-    let all_grads2 = result2.backward();
+    // Compute the gradients using retain — graph survives both passes
+    let all_grads1 = result1.backward_retain();
+    let all_grads2 = result2.backward_retain();
 
-    // let all_grads1 = result1.backward_retain();
-    // let all_grads2 = result2.backward_retain();
+    // Swap the two lines above with these to see the non-retain path panic:
+    // let all_grads1 = result1.backward();
+    // let all_grads2 = result2.backward();
    
     // Evaluate the gradient of result1 with respect to a.
     let grad1 = a.grad(&all_grads1).unwrap();

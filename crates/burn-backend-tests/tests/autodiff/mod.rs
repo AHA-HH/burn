@@ -38,6 +38,7 @@ mod floor;
 mod gather_scatter;
 mod gelu;
 mod gradients;
+mod retain_graph;
 mod log;
 mod log1p;
 mod log_sigmoid;

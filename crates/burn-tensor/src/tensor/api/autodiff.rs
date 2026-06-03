@@ -8,6 +8,15 @@ impl<const D: usize, B: AutodiffBackend> Tensor<B, D> {
         B::backward(self.primitive.clone().tensor())
     }
 
+    /// Backward pass of the tensor without consuming the computational graph.
+    ///
+    /// Equivalent to PyTorch's `loss.backward(retain_graph=True)`. The graph remains
+    /// intact after backward, allowing multiple backward passes on the same graph.
+    pub fn backward_retain(&self) -> B::Gradients {
+        let tensor = self.primitive.clone().tensor();
+        B::backward_retain(&tensor)
+    }
+
     /// Get the gradients of a tensor if it exist.
     ///
     /// Returns a new reference to the same tensor. Therefore the same grad tensor can

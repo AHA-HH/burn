@@ -22,7 +22,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (B::FloatTensorPrimitive, IntTensor<B>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 1>,
                 grads: &mut Gradients,
                 _checkpointer: &mut Checkpointer,
@@ -71,7 +71,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, NodeId, ConvOptions<1>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 3>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -109,7 +109,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, ConvOptions<1>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 2>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -194,7 +194,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, NodeId, ConvTransposeOptions<1>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 3>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -236,7 +236,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, ConvTransposeOptions<1>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 2>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -329,7 +329,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, NodeId, ConvOptions<2>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 3>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -368,7 +368,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, ConvOptions<2>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 2>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -461,7 +461,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, NodeId, NodeId, NodeId, DeformConvOptions<2>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 5>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -502,7 +502,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, NodeId, NodeId, DeformConvOptions<2>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 4>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -538,7 +538,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, NodeId, NodeId, DeformConvOptions<2>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 4>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -574,7 +574,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, NodeId, DeformConvOptions<2>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 3>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -792,7 +792,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, NodeId, ConvTransposeOptions<2>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 3>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -834,7 +834,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, ConvTransposeOptions<2>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 2>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -929,7 +929,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, NodeId, ConvOptions<3>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 3>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -968,7 +968,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, ConvOptions<3>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 2>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -1055,7 +1055,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, NodeId, ConvTransposeOptions<3>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 3>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -1097,7 +1097,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, NodeId, ConvTransposeOptions<3>);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 2>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -1207,7 +1207,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, usize, usize, usize, bool, bool);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 1>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -1285,7 +1285,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, [usize; 2], [usize; 2], [usize; 2], bool, bool);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 1>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -1608,7 +1608,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = NodeId;
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 1>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -1647,7 +1647,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = NodeId;
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 1>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -1696,7 +1696,7 @@ impl<B: Backend, C: CheckpointStrategy> ModuleOps<Autodiff<B, C>> for Autodiff<B
             type State = (NodeId, [usize; 2], InterpolateOptions);
 
             fn backward(
-                self,
+                &self,
                 ops: Ops<Self::State, 1>,
                 grads: &mut Gradients,
                 checkpointer: &mut Checkpointer,
@@ -1758,7 +1758,7 @@ impl<B: Backend> Backward<B, 1> for MaxPool1D {
     type State = (NodeId, IntTensor<B>, usize, usize, usize, usize, bool);
 
     fn backward(
-        self,
+        &self,
         ops: Ops<Self::State, 1>,
         grads: &mut Gradients,
         checkpointer: &mut Checkpointer,
@@ -1800,7 +1800,7 @@ impl<B: Backend> Backward<B, 1> for MaxPool2D {
     );
 
     fn backward(
-        self,
+        &self,
         ops: Ops<Self::State, 1>,
         grads: &mut Gradients,
         checkpointer: &mut Checkpointer,

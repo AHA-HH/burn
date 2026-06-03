@@ -118,6 +118,33 @@ impl AutodiffBackend for Dispatch {
         }
     }
 
+    fn backward_retain(tensor: &DispatchTensor) -> Self::Gradients {
+        let DispatchTensor { kind, .. } = tensor;
+        match kind {
+            #[cfg(feature = "autodiff")]
+            DispatchTensorKind::Autodiff(inner_kind) => match &**inner_kind {
+                #[cfg(feature = "cpu")]
+                DispatchTensorKind::Cpu(tensor) => tensor.as_autodiff().backward_retain(),
+                #[cfg(feature = "cuda")]
+                DispatchTensorKind::Cuda(tensor) => tensor.as_autodiff().backward_retain(),
+                #[cfg(wgpu_metal)]
+                DispatchTensorKind::Metal(tensor) => tensor.as_autodiff().backward_retain(),
+                #[cfg(feature = "rocm")]
+                DispatchTensorKind::Rocm(tensor) => tensor.as_autodiff().backward_retain(),
+                #[cfg(wgpu_vulkan)]
+                DispatchTensorKind::Vulkan(tensor) => tensor.as_autodiff().backward_retain(),
+                #[cfg(wgpu_webgpu)]
+                DispatchTensorKind::WebGpu(tensor) => tensor.as_autodiff().backward_retain(),
+                #[cfg(feature = "ndarray")]
+                DispatchTensorKind::NdArray(tensor) => tensor.as_autodiff().backward_retain(),
+                DispatchTensorKind::Autodiff(_) => {
+                    panic!("Autodiff should not wrap an autodiff tensor.")
+                }
+            },
+            _ => panic!("Requires autodiff tensor."),
+        }
+    }
+
     fn grad(tensor: &DispatchTensor, grads: &Self::Gradients) -> Option<DispatchTensor> {
         let DispatchTensor {
             kind,
